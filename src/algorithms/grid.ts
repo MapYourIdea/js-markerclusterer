@@ -23,6 +23,7 @@ import {
 import { Marker, MarkerUtils } from "../marker-utils";
 import {
   distanceBetweenPoints,
+  equal,
   extendBoundsToPaddedViewport,
   filterMarkersToPaddedViewport,
 } from "./utils";
@@ -68,7 +69,7 @@ export class GridAlgorithm extends AbstractViewportAlgorithm {
     if (this.state.zoom >= this.maxZoom && state.zoom >= this.maxZoom) {
       // still at or beyond maxZoom, no change
     } else {
-      changed = this.state !== state;
+      changed = !equal(this.state, state);
     }
     this.state = state;
     if (map.getZoom() >= this.maxZoom) {

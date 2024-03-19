@@ -15,14 +15,14 @@
  */
 
 import commonjs from "@rollup/plugin-commonjs";
+import copy from "rollup-plugin-copy";
 import fs from "fs";
 import html from "@rollup/plugin-html";
 import jsonNodeResolve from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import path from "path";
-import typescript from "@rollup/plugin-typescript";
 import serve from "rollup-plugin-serve";
-import copy from "rollup-plugin-copy";
+import typescript from "@rollup/plugin-typescript";
 
 const typescriptOptions = {
   tsconfig: "tsconfig.examples.json",

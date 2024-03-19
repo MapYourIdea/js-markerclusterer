@@ -19,6 +19,7 @@ import { Marker, MarkerUtils } from "../marker-utils";
 import SuperCluster, { ClusterFeature } from "supercluster";
 
 import { Cluster } from "../cluster";
+import { equal } from "./utils";
 
 export type SuperClusterOptions = SuperCluster.Options<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +53,7 @@ export class SuperClusterAlgorithm extends AbstractAlgorithm {
     let changed = false;
     const state = { zoom: input.map.getZoom() };
 
-    if (input.markers !== this.markers) {
+    if (!equal(input.markers, this.markers)) {
       changed = true;
       // TODO use proxy to avoid copy?
       this.markers = [...input.markers];
@@ -74,7 +75,7 @@ export class SuperClusterAlgorithm extends AbstractAlgorithm {
 
     if (!changed) {
       if (this.state.zoom <= this.maxZoom || state.zoom <= this.maxZoom) {
-        changed = this.state !== state;
+        changed = !equal(this.state, state);
       }
     }
 

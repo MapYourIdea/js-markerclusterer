@@ -22,10 +22,10 @@ import {
 } from "./core";
 import { Marker, MarkerUtils } from "../marker-utils";
 import SuperCluster, { ClusterFeature } from "supercluster";
+import { equal, getPaddedViewport } from "./utils";
 
 import { Cluster } from "../cluster";
 import { SuperClusterOptions } from "./supercluster";
-import { getPaddedViewport } from "./utils";
 
 export interface SuperClusterViewportOptions
   extends SuperClusterOptions,
@@ -77,8 +77,8 @@ export class SuperClusterViewportAlgorithm extends AbstractViewportAlgorithm {
       ),
     };
 
-    let changed = this.state !== state;
-    if (input.markers !== this.markers) {
+    let changed = equal(this.state, state);
+    if (!equal(input.markers, this.markers)) {
       changed = true;
       // TODO use proxy to avoid copy?
       this.markers = [...input.markers];
