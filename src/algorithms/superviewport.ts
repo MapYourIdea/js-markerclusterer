@@ -20,12 +20,12 @@ import {
   AlgorithmOutput,
   ViewportAlgorithmOptions,
 } from "./core";
-import { SuperClusterOptions } from "./supercluster";
+import { Marker, MarkerUtils } from "../marker-utils";
 import SuperCluster, { ClusterFeature } from "supercluster";
-import { MarkerUtils, Marker } from "../marker-utils";
+
 import { Cluster } from "../cluster";
+import { SuperClusterOptions } from "./supercluster";
 import { getPaddedViewport } from "./utils";
-import equal from "fast-deep-equal";
 
 export interface SuperClusterViewportOptions
   extends SuperClusterOptions,
@@ -77,8 +77,8 @@ export class SuperClusterViewportAlgorithm extends AbstractViewportAlgorithm {
       ),
     };
 
-    let changed = !equal(this.state, state);
-    if (!equal(input.markers, this.markers)) {
+    let changed = this.state !== state;
+    if (input.markers !== this.markers) {
       changed = true;
       // TODO use proxy to avoid copy?
       this.markers = [...input.markers];
