@@ -137,9 +137,7 @@ export const extendPixelBounds = (
   return { northEast, southWest };
 };
 
-export const equal = (
-  a, b
-): boolean => {
+export const equal = (a: any, b: any): boolean => {
   if (a === b) return true;
 
   if (a && b && typeof a == 'object' && typeof b == 'object') {
