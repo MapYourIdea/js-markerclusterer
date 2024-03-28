@@ -1,6 +1,6 @@
 {
   "name": "@melmcchau/markerclustererfortypescript",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Creates and manages per-zoom-level clusters for large amounts of markers. Removes breaking Fast-Deep-Equal Dependency",
   "keywords": [
     "cluster",
