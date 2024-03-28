@@ -137,6 +137,7 @@ export const extendPixelBounds = (
   return { northEast, southWest };
 };
 
+// From Fast-Deep-Equal
 export const equal = (a: any, b: any): boolean => {
   if (a === b) return true;
 

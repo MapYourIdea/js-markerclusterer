@@ -20,9 +20,10 @@ import {
   SuperClusterAlgorithm,
 } from "./algorithms";
 import { ClusterStats, DefaultRenderer, Renderer } from "./renderer";
+import { Marker, MarkerUtils } from "./marker-utils";
+
 import { Cluster } from "./cluster";
 import { OverlayViewSafe } from "./overlay-view-safe";
-import { MarkerUtils, Marker } from "./marker-utils";
 
 export type onClusterClickHandler = (
   event: google.maps.MapMouseEvent,
@@ -51,6 +52,8 @@ export enum MarkerClustererEvents {
   CLUSTERING_BEGIN = "clusteringbegin",
   CLUSTERING_END = "clusteringend",
   CLUSTER_CLICK = "click",
+  MARKER_NOW_SINGLE = "marker_now_single",
+  MARKER_NOW_CLUSTERED = "marker_now_clustered",
 }
 
 export const defaultOnClusterClickHandler: onClusterClickHandler = (
@@ -187,6 +190,11 @@ export class MarkerClusterer extends OverlayViewSafe {
         for (const cluster of clusters) {
           if (cluster.markers.length == 1) {
             singleMarker.add(cluster.markers[0]);
+            google.maps.event.trigger(
+              this,
+              MarkerClustererEvents.MARKER_NOW_SINGLE,
+              cluster.markers[0]
+            );
           }
         }
 
@@ -202,6 +210,11 @@ export class MarkerClusterer extends OverlayViewSafe {
               // - was previously rendered because it is from a cluster with 1 marker,
               // - should no more be rendered as it is not in singleMarker.
               MarkerUtils.setMap(cluster.marker, null);
+              google.maps.event.trigger(
+                this,
+                MarkerClustererEvents.MARKER_NOW_CLUSTERED,
+                cluster.marker
+              );
             }
           } else {
             // Delay the removal of old group markers to avoid flickering.
