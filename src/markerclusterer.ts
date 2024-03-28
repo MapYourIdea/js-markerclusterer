@@ -80,6 +80,7 @@ export class MarkerClusterer extends OverlayViewSafe {
   /** @see {@link MarkerClustererOptions.map} */
   protected map: google.maps.Map | null;
   protected idleListener: google.maps.MapsEventListener;
+  private markerStates = new Map<Marker, "single" | "clustered">();
 
   constructor({
     map,
@@ -190,11 +191,14 @@ export class MarkerClusterer extends OverlayViewSafe {
         for (const cluster of clusters) {
           if (cluster.markers.length == 1) {
             singleMarker.add(cluster.markers[0]);
-            google.maps.event.trigger(
-              this,
-              MarkerClustererEvents.MARKER_NOW_SINGLE,
-              cluster.markers[0]
-            );
+            if (this.markerStates.get(cluster.markers[0]) !== "single") {
+              google.maps.event.trigger(
+                this,
+                MarkerClustererEvents.MARKER_NOW_SINGLE,
+                cluster.markers[0]
+              );
+              this.markerStates.set(cluster.markers[0], "single");
+            }
           }
         }
 
@@ -210,11 +214,14 @@ export class MarkerClusterer extends OverlayViewSafe {
               // - was previously rendered because it is from a cluster with 1 marker,
               // - should no more be rendered as it is not in singleMarker.
               MarkerUtils.setMap(cluster.marker, null);
-              google.maps.event.trigger(
-                this,
-                MarkerClustererEvents.MARKER_NOW_CLUSTERED,
-                cluster.marker
-              );
+              if (this.markerStates.get(cluster.marker) !== "clustered") {
+                google.maps.event.trigger(
+                  this,
+                  MarkerClustererEvents.MARKER_NOW_CLUSTERED,
+                  cluster.marker
+                );
+                this.markerStates.set(cluster.marker, "clustered");
+              }
             }
           } else {
             // Delay the removal of old group markers to avoid flickering.
